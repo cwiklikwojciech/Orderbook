@@ -19,10 +19,7 @@ function Orderbook({ ws, value, offers, setOffers, seqNo }) {
 	ws.onmessage = function(msg) {
 		if (JSON.parse(msg.data).message) {
 			for (let i = 0; i < JSON.parse(msg.data).message.changes.length; i++) {
-				if (
-					JSON.parse(msg.data).message.changes[i].action === 'update' &&
-					JSON.parse(msg.data).message.changes[i].marketCode === value.toUpperCase()
-				) {
+				if (JSON.parse(msg.data).message.changes[i].action === 'update') {
 					temporaryOffers = temporaryOffers.filter(
 						(item) => item.price !== JSON.parse(msg.data).message.changes[i].rate
 					);
@@ -33,7 +30,8 @@ function Orderbook({ ws, value, offers, setOffers, seqNo }) {
 							JSON.parse(msg.data).message.changes[i].state.ra *
 							JSON.parse(msg.data).message.changes[i].state.ca,
 						offer: JSON.parse(msg.data).message.changes[i].state.co,
-						entryType: JSON.parse(msg.data).message.changes[i].entryType
+						entryType: JSON.parse(msg.data).message.changes[i].entryType,
+						marketCode: JSON.parse(msg.data).message.changes[i].marketCode
 					};
 
 					temporaryOffers.push(offer);

@@ -4,6 +4,7 @@ import './Navigation.css';
 import Orderbook from '../Orderbook/Orderbook';
 import Select from 'react-select';
 import MaxMin from '../MaxMin/MaxMin';
+import Big from 'big.js';
 
 let ws = new WebSocket('wss://api.zonda.exchange/websocket/');
 let wsMaxMin = new WebSocket('wss://api.zonda.exchange/websocket/');
@@ -70,6 +71,13 @@ function Navigation() {
 		setMin(0);
 		subsribe();
 	};
+
+	//Lost push, clean array again
+	for (let i = 0; i < offers.length; i++) {
+		if (offers[i].marketCode !== value.toUpperCase()) {
+			setOffers([]);
+		}
+	}
 
 	const spread = () => {
 		for (let i = 2; i < offers.length; i++) {
