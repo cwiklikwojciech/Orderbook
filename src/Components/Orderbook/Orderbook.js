@@ -51,6 +51,7 @@ function Orderbook({ ws, value, offers, setOffers, seqNo }) {
 	return (
 		<div className="flex-container">
 			<div className="Buy">
+				BID
 				{offers.sort((a, b) => b.price.localeCompare(a.price)).map(
 					(item, index) =>
 						item.entryType === 'Buy' ? (
@@ -65,6 +66,7 @@ function Orderbook({ ws, value, offers, setOffers, seqNo }) {
 			</div>
 
 			<div className="Sell">
+				ASK
 				{offers.sort((a, b) => a.price.localeCompare(b.price)).map(
 					(item, index) =>
 						item.entryType === 'Sell' ? (
