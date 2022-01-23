@@ -1,0 +1,34 @@
+.container {
+	background-color: rgba(40, 66, 116, 0.8);
+	width: 100%;
+	margin: 0 auto;
+	padding: 10px 0;
+}
+header {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.select {
+	flex-basis: 0;
+	flex-grow: 1;
+	width: 30px;
+	display: flex;
+	justify-content: center;
+}
+
+.spread {
+	display: flex;
+}
+.spread {
+	display: block;
+	margin: 10px;
+	color: #fff;
+	text-decoration: none;
+}
+.price {
+	flex-basis: 0;
+	flex-grow: 1;
+	color: #fff;
+}
