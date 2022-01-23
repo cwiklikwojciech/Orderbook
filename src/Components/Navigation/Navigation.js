@@ -4,7 +4,6 @@ import './Navigation.css';
 import Orderbook from '../Orderbook/Orderbook';
 import Select from 'react-select';
 import MaxMin from '../MaxMin/MaxMin';
-import { isLabelWithInternallyDisabledControl } from '@testing-library/user-event/dist/utils';
 
 let ws = new WebSocket('wss://api.zonda.exchange/websocket/');
 let wsMaxMin = new WebSocket('wss://api.zonda.exchange/websocket/');
@@ -80,8 +79,6 @@ function Navigation() {
 		}
 	};
 
-	console.log(offers);
-
 	return (
 		<div>
 			<div className="container">
@@ -97,16 +94,7 @@ function Navigation() {
 					<div className="spread">{spread()}</div>
 
 					<div className="price">
-						{' '}
-						<MaxMin
-							wsMaxMin={wsMaxMin}
-							value={value}
-							setMax={setMax}
-							setMin={setMin}
-							max={max}
-							min={min}
-							label={isLabelWithInternallyDisabledControl}
-						/>
+						<MaxMin wsMaxMin={wsMaxMin} value={value} setMax={setMax} setMin={setMin} max={max} min={min} />
 					</div>
 				</header>
 			</div>

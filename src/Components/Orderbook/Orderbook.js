@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './Orderbook.css';
 
-// let seqNo = 0;
 let temporaryOffers = [];
 
 function Orderbook({ ws, value, offers, setOffers, seqNo, label }) {
@@ -47,7 +46,6 @@ function Orderbook({ ws, value, offers, setOffers, seqNo, label }) {
 			}
 
 			seqNo = JSON.parse(msg.data).seqNo;
-			// console.log(seqNo);
 			setOffers(temporaryOffers);
 		}
 	};
@@ -58,7 +56,7 @@ function Orderbook({ ws, value, offers, setOffers, seqNo, label }) {
 				{offers.sort((a, b) => b.price.localeCompare(a.price)).map(
 					(item, index) =>
 						item.entryType === 'Buy' ? (
-							<div>
+							<div key={index}>
 								<span className="list rate">{Number(item.price).toFixed(2)}</span>
 								<span className="list amount">{Number(item.amount).toFixed(8)} </span>
 								<span className="list priceorderbook">{Number(item.pln).toFixed(2)} </span>
@@ -72,7 +70,7 @@ function Orderbook({ ws, value, offers, setOffers, seqNo, label }) {
 				{offers.sort((a, b) => a.price.localeCompare(b.price)).map(
 					(item, index) =>
 						item.entryType === 'Sell' ? (
-							<div>
+							<div key={index}>
 								<span className="list rate">{Number(item.price).toFixed(2)}</span>
 								<span className="list amount">{Number(item.amount).toFixed(8)} </span>
 								<span className="list priceorderbook">{Number(item.pln).toFixed(2)} </span>
