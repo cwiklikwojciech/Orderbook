@@ -3,7 +3,7 @@ import './Orderbook.css';
 
 let temporaryOffers = [];
 
-function Orderbook({ ws, value, offers, setOffers, seqNo, label }) {
+function Orderbook({ ws, value, offers, setOffers, seqNo }) {
 	temporaryOffers = offers;
 
 	ws.onopen = function() {
@@ -20,8 +20,8 @@ function Orderbook({ ws, value, offers, setOffers, seqNo, label }) {
 		if (JSON.parse(msg.data).message) {
 			for (let i = 0; i < JSON.parse(msg.data).message.changes.length; i++) {
 				if (
-					JSON.parse(msg.data).message.changes[i].action === 'update' ||
-					JSON.parse(msg.data).message.changes[i].marketCode === label
+					JSON.parse(msg.data).message.changes[i].action === 'update' &&
+					JSON.parse(msg.data).message.changes[i].marketCode === value.toUpperCase()
 				) {
 					temporaryOffers = temporaryOffers.filter(
 						(item) => item.price !== JSON.parse(msg.data).message.changes[i].rate
