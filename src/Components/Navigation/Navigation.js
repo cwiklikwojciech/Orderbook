@@ -8,7 +8,6 @@ import Big from 'big.js';
 
 let ws = new WebSocket('wss://api.zonda.exchange/websocket/');
 let wsMaxMin = new WebSocket('wss://api.zonda.exchange/websocket/');
-let seqNo = 0;
 
 function Navigation() {
 	const [ value, setValue ] = useState('btc-pln');
@@ -106,7 +105,7 @@ function Navigation() {
 					</div>
 				</header>
 			</div>
-			<Orderbook ws={ws} value={value} offers={offers} setOffers={setOffers} seqNo={seqNo} />
+			<Orderbook ws={ws} value={value} offers={offers} setOffers={setOffers} />
 		</div>
 	);
 }
