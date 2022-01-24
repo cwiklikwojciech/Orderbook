@@ -3,7 +3,7 @@ import './Orderbook.css';
 
 let temporaryOffers = [];
 
-function Orderbook({ ws, value, offers, setOffers, seqNo }) {
+function Orderbook({ ws, value, offers, setOffers }) {
 	temporaryOffers = offers;
 
 	ws.onopen = function() {
@@ -19,7 +19,10 @@ function Orderbook({ ws, value, offers, setOffers, seqNo }) {
 	ws.onmessage = function(msg) {
 		if (JSON.parse(msg.data).message) {
 			for (let i = 0; i < JSON.parse(msg.data).message.changes.length; i++) {
-				if (JSON.parse(msg.data).message.changes[i].action === 'update') {
+				if (
+					JSON.parse(msg.data).message.changes[i].action === 'update' &&
+					offers.seqNo === JSON.parse(msg.data).seqNo - 1
+				) {
 					temporaryOffers = temporaryOffers.filter(
 						(item) => item.price !== JSON.parse(msg.data).message.changes[i].rate
 					);
@@ -31,19 +34,20 @@ function Orderbook({ ws, value, offers, setOffers, seqNo }) {
 							JSON.parse(msg.data).message.changes[i].state.ca,
 						offer: JSON.parse(msg.data).message.changes[i].state.co,
 						entryType: JSON.parse(msg.data).message.changes[i].entryType,
-						marketCode: JSON.parse(msg.data).message.changes[i].marketCode
+						marketCode: JSON.parse(msg.data).message.changes[i].marketCode,
+						seqNo: JSON.parse(msg.data).seqNo
 					};
 
 					temporaryOffers.push(offer);
 				}
 				if (JSON.parse(msg.data).message.changes[i].action === 'remove') {
 					temporaryOffers = temporaryOffers.filter(
-						(item) => item.price !== JSON.parse(msg.data).message.changes[i].rate
+						(item) => Number(item.price) !== Number(JSON.parse(msg.data).message.changes[i].rate)
 					);
 				}
 			}
 
-			seqNo = JSON.parse(msg.data).seqNo;
+			temporaryOffers.seqNo = JSON.parse(msg.data).seqNo;
 			setOffers(temporaryOffers);
 		}
 	};
