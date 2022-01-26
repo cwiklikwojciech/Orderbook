@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './Orderbook.css';
+import Decimal from 'decimal.js';
 
 let temporaryOffers = [];
 
@@ -25,10 +26,14 @@ function Orderbook({ value }) {
 					for (let i = 0; i < message.changes.length; i++) {
 						if (message.changes[i].action === 'update') {
 							temporaryOffers = temporaryOffers.filter((item) => item.price !== message.changes[i].rate);
+							const decimalPln = new Decimal(message.changes[i].state.ra).times(
+								message.changes[i].state.ca
+							);
+
 							let offer = {
 								price: message.changes[i].rate,
 								amount: message.changes[i].state.ca,
-								pln: message.changes[i].state.ra * message.changes[i].state.ca,
+								pln: decimalPln.toDP(2, Decimal.ROUND_DOWN),
 								offer: message.changes[i].state.co,
 								entryType: message.changes[i].entryType,
 								marketCode: message.changes[i].marketCode,
@@ -81,7 +86,7 @@ function Orderbook({ value }) {
 							<div key={Number(item.price) * Number(item.pln)}>
 								<span className="list rate">{Number(item.price).toFixed(2)}</span>
 								<span className="list amount">{Number(item.amount).toFixed(8)} </span>
-								<span className="list priceorderbook">{Number(item.pln).toFixed(2)} </span>
+								<span className="list priceorderbook">{Number(item.pln)} </span>
 								<span className="list offer">{Number(item.offer).toFixed(0)}</span>
 							</div>
 						) : null
@@ -96,7 +101,7 @@ function Orderbook({ value }) {
 							<div key={Number(item.price) * Number(item.pln)}>
 								<span className="list rate">{Number(item.price).toFixed(2)}</span>
 								<span className="list amount">{Number(item.amount).toFixed(8)} </span>
-								<span className="list priceorderbook">{Number(item.pln).toFixed(2)} </span>
+								<span className="list priceorderbook">{Number(item.pln)} </span>
 								<span className="list offer">{Number(item.offer).toFixed(0)}</span>
 							</div>
 						) : null

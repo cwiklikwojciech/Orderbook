@@ -43,9 +43,8 @@ function Spread({ value }) {
 				temporratyPrice = temporratyPrice.sort((a, b) => a.price.localeCompare(b.price));
 				for (let i = 2; i < temporratyPrice.length; i++) {
 					if (temporratyPrice[i].entryType === 'Sell') {
-						const test = new Decimal(temporratyPrice[i].price).minus(temporratyPrice[i - 1].price);
-						console.log(test.toFixed(2));
-						setSpread(test.toFixed(2));
+						const spreadDecimal = new Decimal(temporratyPrice[i].price).minus(temporratyPrice[i - 1].price);
+						setSpread(spreadDecimal.toFixed(2));
 						break;
 					}
 				}
@@ -61,11 +60,16 @@ function Spread({ value }) {
 				);
 				temporratyPrice = [];
 				setSpread(0);
-				console.log(temporratyPrice);
 			};
 		},
 		[ value ]
 	);
+	//Lost push, clean array again
+	for (let i = 0; i < temporratyPrice.length; i++) {
+		if (temporratyPrice[i].marketCode !== value.toUpperCase()) {
+			temporratyPrice = [];
+		}
+	}
 
 	return <div>{spread}</div>;
 }
